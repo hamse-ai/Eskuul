@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Login = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("")
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -13,7 +14,7 @@ const Login = ({ setUser }) => {
     try {
       const res = await axios.post(
         "http://localhost:3000/api/auth/login",
-        { email, password },
+        { email, password, role },
         { withCredentials: true }
       );
 
@@ -50,6 +51,16 @@ const Login = ({ setUser }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+         <label htmlFor="">Sign in as</label>
+         <select
+           className="border p-2 w-full mb-4 bg-gray-100 text-gray-700 cursor-not-allowed"
+           value={role}
+           onChange={(e) => setRole(e.target.value)}
+         >
+           <option value=""></option>
+           <option value="student">student</option>
+           <option value="admin">admin</option>
+         </select>
         <button className="bg-blue-500 text-white p-2 w-full">Login</button>
       </form>
     </div>

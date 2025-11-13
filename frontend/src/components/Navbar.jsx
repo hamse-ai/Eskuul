@@ -38,27 +38,30 @@ const Navbar = ({ user, setUser }) => {
 
         <div className="flex items-center space-x-4">
           {user ? (
-            <>
-              <span className="text-sm text-gray-300">
-                👋 Welcome, {user.username || user.email || "User"}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="mx-2 hover:text-gray-300 transition">
-                Login
+          <>
+            {user.role === "admin" && (
+              <Link to="/admin" className="mx-2 hover:text-gray-300 transition">
+                Admin Dashboard
               </Link>
-              <Link to="/register" className="mx-2 hover:text-gray-300 transition">
-                Register
-              </Link>
-            </>
-          )}
+            )}
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="mx-2 hover:text-gray-300 transition">
+              Login
+            </Link>
+            <Link to="/register" className="mx-2 hover:text-gray-300 transition">
+              Register
+            </Link>
+          </>
+        )}
+
         </div>
       </div>
     </nav>

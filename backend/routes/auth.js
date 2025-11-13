@@ -14,15 +14,17 @@ const cookieOptions = {
 };
 
 // Generate JWT
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+const generateToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
 // Register
 router.post('/register', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
-  if (!name || !email || !password) {
+  console.log(req.body);
+
+  if (!name || !email || !password || !role) {
     return res.status(400).json({ message: "Please provide all required fields" });
   }
 
@@ -35,11 +37,11 @@ router.post('/register', async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = await pool.query(
-    'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email',
-    [name, email, hashedPassword]
+    'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role',
+    [name, email, hashedPassword, role]
   );
 
-  const token = generateToken(newUser.rows[0].id);
+  const token = generateToken(newUser.rows[0].id, newUser.rows[0].role);
 
   res.cookie('token', token, cookieOptions);
 
@@ -48,9 +50,10 @@ router.post('/register', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
+  // console.log('req.body: ', req.body);
 
-  if (!email || !password) {
+  if (!email || !password || !role) {
     return res.status(400).json({ message: "Please provide all required fields" });
   }
 
@@ -61,20 +64,24 @@ router.post('/login', async (req, res) => {
   }
 
   const userData = user.rows[0];
+
+  if (userData.role !== role) {
+    return res.status(400).json({ message: "Invalid credentials" });
+  }
   const isMatch = await bcrypt.compare(password, userData.password);
 
-  console.log('Password match:', isMatch);
+  // console.log('Password match:', isMatch);
 
   if (!isMatch) {
     return res.status(400).json({ message: "Invalid credentials" });
   }
 
-  const token = generateToken(userData.id);
+  const token = generateToken(userData.id, userData.role);
 
   res.cookie('token', token, cookieOptions);
 
   res.json({
-    user: { id: userData.id, name: userData.name, email: userData.email },
+    user: { id: userData.id, name: userData.name, email: userData.email, role: userData.role },
   });
 });
 
