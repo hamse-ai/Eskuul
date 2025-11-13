@@ -3,21 +3,20 @@ import dotenv from 'dotenv';
 
 dotenv.config()
 
-// PostgreSQL client setup
+// Neon Database connection using connection string
 const pool = new Pool({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DATABASE,
-  password: process.env.PG_PASSWORD,
-  port: process.env.PG_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 pool.on("connect", ()=> {
-    console.log("connected to database")
+    console.log("connected to Neon database")
 })
 
-pool.on("error", ()=> {
-    console.error("unexpected error or idle client", error);
+pool.on("error", (error)=> {
+    console.error("unexpected error on idle client", error);
 })
 
 export default pool;
