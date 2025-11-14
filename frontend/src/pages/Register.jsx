@@ -15,7 +15,9 @@ const Register = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    const res = await axios.post("http://localhost:3000/api/auth/register", form);
+    const res = await axios.post("http://localhost:3000/api/auth/register", form, {
+      withCredentials: true
+    });
     console.log("form: " + form);
     setUser(res.data.user);
     navigate('/')
@@ -61,15 +63,18 @@ const Register = ({ setUser }) => {
       onChange={(e) => setForm({ ...form, password: e.target.value })}
     />
 
-    {/* Role Field - Fixed Single Option */}
+    {/* Role Field */}
     <label htmlFor="">Sign up as</label>
     <select
-      className="border p-2 w-full mb-4 bg-gray-100 text-gray-700 cursor-not-allowed"
+      className="border p-2 w-full mb-4"
       value={form.role}
       onChange={(e) => setForm({ ...form, role: e.target.value })}
+      required
     >
-      <option value="student">student</option>
-      <option value="student">student</option>
+      <option value="">Select role</option>
+      <option value="student">Student</option>
+      <option value="teacher">Teacher</option>
+      <option value="admin">Admin</option>
     </select>
 
     <button className="bg-blue-500 hover:bg-blue-600 text-white p-2 w-full rounded transition">

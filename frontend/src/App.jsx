@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
 import AdminDashboard from "./pages/AdminDashboard";
+import TeacherDashboard from "./pages/TeacherDashboard";
+import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 axios.defaults.withCredentials = true;
@@ -45,6 +47,26 @@ function App() {
           element={
             <ProtectedRoute user={user} allowedRoles={["admin"]}>
               <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Teacher Only Route */}
+        <Route
+          path="/teacher"
+          element={
+            <ProtectedRoute user={user} allowedRoles={["teacher"]}>
+              <TeacherDashboard user={user} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Student Only Route */}
+        <Route
+          path="/student"
+          element={
+            <ProtectedRoute user={user} allowedRoles={["student"]}>
+              <StudentDashboard user={user} />
             </ProtectedRoute>
           }
         />

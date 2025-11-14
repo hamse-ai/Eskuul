@@ -1,17 +1,29 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = ({ user, error }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect to dashboard based on role
+    if (user) {
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else if (user.role === "teacher") {
+        navigate("/teacher");
+      } else if (user.role === "student") {
+        navigate("/student");
+      }
+    }
+  }, [user, navigate]);
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg text-center">
         {error && <p className="text-red-500">{error}</p>}
         {user ? (
           <div>
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">
-              Welcome, {user.name}!
-            </h2>
-            <p className="text-gray-600">Email: {user.email}</p>
+            <p className="text-gray-600">Redirecting to your dashboard...</p>
           </div>
         ) : (
           <div>

@@ -53,13 +53,15 @@ const Login = ({ setUser }) => {
         />
          <label htmlFor="">Sign in as</label>
          <select
-           className="border p-2 w-full mb-4 bg-gray-100 text-gray-700 cursor-not-allowed"
+           className="border p-2 w-full mb-4"
            value={role}
            onChange={(e) => setRole(e.target.value)}
+           required
          >
-           <option value=""></option>
-           <option value="student">student</option>
-           <option value="admin">admin</option>
+           <option value="">Select role</option>
+           <option value="student">Student</option>
+           <option value="teacher">Teacher</option>
+           <option value="admin">Admin</option>
          </select>
         <button className="bg-blue-500 text-white p-2 w-full">Login</button>
       </form>

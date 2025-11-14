@@ -33,15 +33,26 @@ const Navbar = ({ user, setUser }) => {
     <nav className="bg-gray-800 text-white">
       <div className="max-w-6xl mx-auto p-4 flex justify-between items-center">
         <Link to="/" className="font-bold text-lg hover:text-gray-300 transition">
-          PERN Auth
+          Eskuul
         </Link>
 
         <div className="flex items-center space-x-4">
           {user ? (
           <>
+            <span className="text-gray-300">Welcome, {user.name}</span>
             {user.role === "admin" && (
               <Link to="/admin" className="mx-2 hover:text-gray-300 transition">
                 Admin Dashboard
+              </Link>
+            )}
+            {user.role === "teacher" && (
+              <Link to="/teacher" className="mx-2 hover:text-gray-300 transition">
+                Teacher Dashboard
+              </Link>
+            )}
+            {user.role === "student" && (
+              <Link to="/student" className="mx-2 hover:text-gray-300 transition">
+                Study Materials
               </Link>
             )}
             <button
