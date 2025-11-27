@@ -137,7 +137,7 @@ const StudentDashboard = ({ user, setUser }) => {
       setLoading(true);
       const timeTaken = quizStartTime ? Math.floor((Date.now() - quizStartTime) / 1000) : null;
       const api = import.meta.env.VITE_API_URL;
-      const res = await axios.post(`${api}api/quizzes/submit/${selectedQuiz}`, { answers, time_taken_seconds: timeTaken }, { withCredentials: true });
+      const res = await axios.post(`${api}/api/quizzes/submit/${selectedQuiz}`, { answers, time_taken_seconds: timeTaken }, { withCredentials: true });
       setQuizResults(res.data);
       setTimeRemaining(null);
     } catch (error) {
