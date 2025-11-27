@@ -53,7 +53,8 @@ const StudentDashboard = ({ user, setUser }) => {
   const fetchApprovedPdfs = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:3000/api/pdfs/approved");
+      const api = import.meta.env.VITE_API_URL;
+      const res = await axios.get(`${api}/api/pdfs/approved`);
       setPdfs(res.data.pdfs);
       setFilteredPdfs(res.data.pdfs);
     } catch (error) {
@@ -65,7 +66,8 @@ const StudentDashboard = ({ user, setUser }) => {
 
   const fetchApprovedQuizzes = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/quizzes/approved");
+      const api = import.meta.env.VITE_API_URL;
+      const res = await axios.get(`${api}/api/quizzes/approved`);
       setQuizzes(res.data.quizzes);
       setFilteredQuizzes(res.data.quizzes);
     } catch (error) {
@@ -91,7 +93,8 @@ const StudentDashboard = ({ user, setUser }) => {
 
   const handleDownload = async (pdfId, fileName) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/pdfs/download/${pdfId}`, { responseType: "blob" });
+      const api = import.meta.env.VITE_API_URL;
+      const response = await axios.get(`${api}/api/pdfs/download/${pdfId}`, { responseType: "blob" });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -108,7 +111,8 @@ const StudentDashboard = ({ user, setUser }) => {
   const startQuiz = async (quizId) => {
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:3000/api/quizzes/${quizId}`);
+      const api = import.meta.env.VITE_API_URL;
+      const res = await axios.get(`${api}/api/quizzes/${quizId}`);
       setQuizData(res.data);
       setSelectedQuiz(quizId);
       setAnswers({});
@@ -132,7 +136,8 @@ const StudentDashboard = ({ user, setUser }) => {
     try {
       setLoading(true);
       const timeTaken = quizStartTime ? Math.floor((Date.now() - quizStartTime) / 1000) : null;
-      const res = await axios.post(`http://localhost:3000/api/quizzes/submit/${selectedQuiz}`, { answers, time_taken_seconds: timeTaken }, { withCredentials: true });
+      const api = import.meta.env.VITE_API_URL;
+      const res = await axios.post(`${api}api/quizzes/submit/${selectedQuiz}`, { answers, time_taken_seconds: timeTaken }, { withCredentials: true });
       setQuizResults(res.data);
       setTimeRemaining(null);
     } catch (error) {

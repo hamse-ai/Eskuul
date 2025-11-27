@@ -16,6 +16,7 @@ const TeacherDashboard = ({ user, setUser }) => {
   const [questions, setQuestions] = useState([{ question_text: "", option_a: "", option_b: "", option_c: "", option_d: "", correct_answer: "", explanation: "", marks: 1 }]);
   const [showQuizForm, setShowQuizForm] = useState(false);
   const navigate = useNavigate();
+  const api = import.meta.env.VITE_API_URL;
 
   const menuItems = [
     { id: "overview", label: "Overview", icon: "📊" },
@@ -41,7 +42,7 @@ const TeacherDashboard = ({ user, setUser }) => {
   const fetchMyPdfs = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:3000/api/pdfs/my-pdfs", { withCredentials: true });
+      const res = await axios.get(`${api}/api/pdfs/my-pdfs`, { withCredentials: true });
       setPdfs(res.data.pdfs);
     } catch (error) {
       console.error("Error fetching PDFs:", error);
@@ -52,7 +53,7 @@ const TeacherDashboard = ({ user, setUser }) => {
 
   const fetchMyQuizzes = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/quizzes/my-quizzes", { withCredentials: true });
+      const res = await axios.get(`${api}/api/quizzes/my-quizzes`, { withCredentials: true });
       setQuizzes(res.data.quizzes);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
@@ -82,7 +83,7 @@ const TeacherDashboard = ({ user, setUser }) => {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:3000/api/pdfs/upload", formData, { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } });
+      await axios.post(`${api}/api/pdfs/upload`, formData, { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } });
       showStatus("success", "PDF uploaded successfully! Awaiting admin approval.");
       setUploadForm({ subject: "", topic: "", grade_level: "" });
       setSelectedFile(null);
@@ -98,7 +99,7 @@ const TeacherDashboard = ({ user, setUser }) => {
   const handleDeletePdf = async (pdfId) => {
     if (!window.confirm("Are you sure you want to delete this PDF?")) return;
     try {
-      await axios.delete(`http://localhost:3000/api/pdfs/${pdfId}`, { withCredentials: true });
+      await axios.delete(`${api}/api/pdfs/${pdfId}`, { withCredentials: true });
       showStatus("success", "PDF deleted successfully");
       fetchMyPdfs();
     } catch (error) {
@@ -138,7 +139,7 @@ const TeacherDashboard = ({ user, setUser }) => {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:3000/api/quizzes/create", { ...quizForm, questions }, { withCredentials: true });
+      await axios.post(`${api}/api/quizzes/create`, { ...quizForm, questions }, { withCredentials: true });
       showStatus("success", "Quiz created successfully! Awaiting admin approval.");
       setQuizForm({ title: "", subject: "", topic: "", grade_level: "", time_limit_minutes: "" });
       setQuestions([{ question_text: "", option_a: "", option_b: "", option_c: "", option_d: "", correct_answer: "", explanation: "", marks: 1 }]);
@@ -154,7 +155,7 @@ const TeacherDashboard = ({ user, setUser }) => {
   const handleDeleteQuiz = async (quizId) => {
     if (!window.confirm("Are you sure you want to delete this quiz?")) return;
     try {
-      await axios.delete(`http://localhost:3000/api/quizzes/${quizId}`, { withCredentials: true });
+      await axios.delete(`${api}/api/quizzes/${quizId}`, { withCredentials: true });
       showStatus("success", "Quiz deleted successfully");
       fetchMyQuizzes();
     } catch (error) {

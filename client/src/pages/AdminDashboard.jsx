@@ -13,6 +13,7 @@ const AdminDashboard = ({ user, setUser }) => {
   const [rejectingPdfId, setRejectingPdfId] = useState(null);
   const [rejectingQuizId, setRejectingQuizId] = useState(null);
   const [quizRejectionReason, setQuizRejectionReason] = useState("");
+  const api = import.meta.env.VITE_API_URL;
 
   const menuItems = [
     { id: "overview", label: "Overview", icon: "grid" },
@@ -34,7 +35,8 @@ const AdminDashboard = ({ user, setUser }) => {
   const fetchPendingContent = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:3000/api/pdfs/pending", { withCredentials: true });
+
+      const res = await axios.get(`${api}/api/pdfs/pending`, { withCredentials: true });
       setPendingPdfs(res.data.pdfs);
     } catch (error) {
       console.error("Error fetching pending content:", error);
@@ -46,7 +48,7 @@ const AdminDashboard = ({ user, setUser }) => {
 
   const fetchPendingQuizzes = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/quizzes/admin/pending", { withCredentials: true });
+      const res = await axios.get(`${api}/api/quizzes/admin/pending`, { withCredentials: true });
       setPendingQuizzes(res.data.quizzes);
     } catch (error) {
       console.error("Error fetching pending quizzes:", error);
@@ -56,7 +58,7 @@ const AdminDashboard = ({ user, setUser }) => {
   const handleApprovePdf = async (pdfId) => {
     try {
       setLoading(true);
-      await axios.put(`http://localhost:3000/api/pdfs/approve/${pdfId}`, {}, { withCredentials: true });
+      await axios.put(`${api}/api/pdfs/approve/${pdfId}`, {}, { withCredentials: true });
       showStatus("success", "PDF approved successfully!");
       fetchPendingContent();
     } catch (error) {
@@ -73,7 +75,7 @@ const AdminDashboard = ({ user, setUser }) => {
     }
     try {
       setLoading(true);
-      await axios.put(`http://localhost:3000/api/pdfs/reject/${pdfId}`, { rejection_reason: rejectionReason }, { withCredentials: true });
+      await axios.put(`${api}/api/pdfs/reject/${pdfId}`, { rejection_reason: rejectionReason }, { withCredentials: true });
       showStatus("success", "PDF rejected successfully");
       setRejectionReason("");
       setRejectingPdfId(null);
@@ -88,7 +90,7 @@ const AdminDashboard = ({ user, setUser }) => {
   const handleApproveQuiz = async (quizId) => {
     try {
       setLoading(true);
-      await axios.put(`http://localhost:3000/api/quizzes/approve/${quizId}`, {}, { withCredentials: true });
+      await axios.put(`${api}/api/quizzes/approve/${quizId}`, {}, { withCredentials: true });
       showStatus("success", "Quiz approved successfully!");
       fetchPendingQuizzes();
     } catch (error) {
@@ -105,7 +107,7 @@ const AdminDashboard = ({ user, setUser }) => {
     }
     try {
       setLoading(true);
-      await axios.put(`http://localhost:3000/api/quizzes/reject/${quizId}`, { rejection_reason: quizRejectionReason }, { withCredentials: true });
+      await axios.put(`${api}/api/quizzes/reject/${quizId}`, { rejection_reason: quizRejectionReason }, { withCredentials: true });
       showStatus("success", "Quiz rejected successfully");
       setQuizRejectionReason("");
       setRejectingQuizId(null);
