@@ -8,10 +8,11 @@ const router = express.Router();
 
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
-  maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+  secure: true,
+  sameSite: "none",
+  maxAge: 1000 * 60 * 60 * 24 * 30
 };
+
 
 // Generate JWT
 const generateToken = (id, role) => {
