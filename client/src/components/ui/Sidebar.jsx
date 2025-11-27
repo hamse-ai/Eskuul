@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+  const api = import.meta.env.VITE_API_URL;
+
 
 const Sidebar = ({ user, setUser, menuItems, activeItem, onItemClick }) => {
   const navigate = useNavigate();
@@ -7,7 +9,7 @@ const Sidebar = ({ user, setUser, menuItems, activeItem, onItemClick }) => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:3000/api/auth/logout",
+        `${api}api/auth/logout`,
         {},
         { withCredentials: true }
       );
