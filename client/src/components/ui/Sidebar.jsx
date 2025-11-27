@@ -9,7 +9,7 @@ const Sidebar = ({ user, setUser, menuItems, activeItem, onItemClick }) => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        `${api}api/auth/logout`,
+        `${api}/api/auth/logout`,
         {},
         { withCredentials: true }
       );
