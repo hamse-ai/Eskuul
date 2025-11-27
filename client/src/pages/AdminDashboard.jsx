@@ -131,6 +131,7 @@ const AdminDashboard = ({ user, setUser }) => {
           <Alert type={actionStatus.type} message={actionStatus.message} onClose={() => setActionStatus({ type: "", message: "" })} />
         </div>
       )}
+      {  console.log(api)}
 
       {activeTab === "overview" && (
         <div className="space-y-8">
