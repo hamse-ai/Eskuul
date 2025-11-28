@@ -1,282 +1,103 @@
-#Eskuul – Learning Resource Management System
+# Eskuul - Education Platform
 
-###A full-stack web application for uploading, managing, and accessing educational content. Built with Node.js, Express, PostgreSQL, React, and JWT authentication.
+A full-stack educational management system with role-based access for Admin, Teacher, and Student users.
 
-##📌 Table of Contents
+## Tech Stack
 
-Project Description
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 19 + Vite + Tailwind CSS |
+| Backend | Node.js + Express.js |
+| Database | PostgreSQL (Neon) |
+| Auth | JWT + Bcrypt |
 
-Features
+## Prerequisites
 
-Tech Stack
+- Node.js v14+
+- npm or yarn
+- PostgreSQL database (or Neon cloud)
 
-System Architecture
+## Installation
 
-Folder Structure
-
-Installation & Setup
-
-1. Clone Repository
-
-2. Backend Setup
-
-3. Frontend Setup
-
-Environment Variables
-
-Running the Project Locally
-
-Deployment
-
-Deploy Backend (Render)
-
-Deploy Frontend (Vercel)
-
-API Endpoints
-
-Demo Links
-
-Project Description
-
-Eskuul is a system that allows students to upload educational resources (PDFs, notes, past papers, etc.) which must be approved by an admin before becoming publicly available.
-The system provides secure authentication, role-based authorization, and a clean user interface for accessing resources.
-
-##Features
-👤 Authentication
-
-User Registration
-
-Login (JWT + Cookies)
-
-Role-based access (Student, Admin)
-
-##📚 Resource Management
-
-File Upload (PDFs, images, etc.)
-
-Admin-only approval of uploaded resources
-
-Resource listing with filters
-
-Secure file access
-
-##⚙️ System
-
-Secure API using JWT
-
-Fully deployed frontend + backend
-
-Publicly accessible URL
-
-Clean UI (React + Vite)
-
-##Tech Stack
-Frontend
-
-React (Vite)
-
-Axios
-
-TailwindCSS
-
-Backend
-
-Node.js / Express
-
-PostgreSQL (pg)
-
-JWT
-
-Multer (file upload)
-
-##Deployment
-
-Frontend: Vercel
-
-Backend: Render
-
-Database: Render PostgreSQL
-
-##System Architecture
-React (Vercel) ---> Node.js Backend (Render) ---> PostgreSQL Database (Render)
-
-
-Frontend communicates with the backend via a public API URL.
-
-```Folder Structure
-root/
-│── backend/
-│   ├── server.js
-│   ├── routes/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   └── uploads/
-│
-└── frontend/
-    ├── src/
-    ├── public/
-    ├── index.html
-    └── vite.config.js
-```
-
-Installation & Setup
-1. Clone Repository
-```
+### 1. Clone the repository
+```bash
 git clone https://github.com/hamse-ai/Eskuul.git
 cd Eskuul
 ```
-2. Backend Setup (Node.js / Express)
-Install dependencies:
-```
+
+### 2. Server Setup
+```bash
 cd server
 npm install
 ```
-Add .env file:
-```
-PORT=10000
-DATABASE_URL=your_postgres_url
-JWT_SECRET=your_jwt_secret
-CORS_ORIGIN=https://your-frontend.vercel.app
-```
-Start backend:
-```
-npm start
 
+Create a `.env` file in `server/`:
+```env
+JWT_SECRET=your-secret-key
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+PORT=3000
+CLIENT_URL=http://localhost:5173
 ```
-Backend runs on:
-```
-http://localhost:10000
-```
-3. Frontend Setup (React / Vite)
 
-Install dependencies:
+### 3. Database Migrations
+Run the SQL migrations against your PostgreSQL database:
+```bash
+psql -U <username> -d <database> -f migrations/complete_schema.sql
 ```
-cd frontend
+
+### 4. Client Setup
+```bash
+cd ../client
 npm install
 ```
 
-Create .env:
+## Running the Application
 
-```
-VITE_API_URL=https://your-backend.onrender.com
-```
-Start:
-```
+### Development Mode
+
+**Terminal 1 - Server:**
+```bash
+cd server
 npm run dev
+# Runs on or your custom port http://localhost:3000
 ```
 
-Frontend runs on:
-```
-http://localhost:5173
-```
-Environment Variables
-
-Backend .env
-```
-PORT=
-DATABASE_URL=
-JWT_SECRET=
-CORS_ORIGIN=
-```
-Frontend .env
-VITE_API_URL=
-
-
-Make sure frontend always uses the deployed backend URL, not localhost.
-
-Running the Project Locally
-Start backend:
-```
-cd backend
+**Terminal 2 - Client:**
+```bash
+cd client
 npm run dev
+# Runs on http://localhost:5173
 ```
-Start frontend:
 
-```
-cd frontend
+### Production Build
+```bash
+# Client
+cd client
 npm run dev
-```
-Deployment
-Deploy Backend (Render)
 
-Go to https://render.com
-
-Create new Web Service
-
-Select the backend folder
-
-Add environment variables
-
-Set "Start Command":
-
+# Server
+cd server
 node server.js
-
-
-##Deploy
-
-Copy the public backend URL
-Example:
-
-https://eskuul.onrender.com
-
-Deploy Frontend (Vercel)
-
-Go to https://vercel.com
-
-Import the repo
-
-Select the frontend folder
-
-Add environment variable:
-
-VITE_API_URL=https://eskuul.onrender.com
-
-
-Deploy
-
-Frontend URL example:
-
-https://eskuul.vercel.app
-
-##API Endpoints
-Auth
-Method	Endpoint	Description
-
 ```
-POST	/api/auth/register	Register user
-POST	/api/auth/login	Login user
-POST	/api/auth/logout	Logout user
-Resources
-Method	Endpoint	Requires Auth	Role
-POST	/api/resources/upload	Yes	Student
-GET	/api/resources	No	-
-PATCH	/api/resources/:id/approve	Yes	Admin
-````
-Demo Links
-🎥 Video Demo
 
-✔ Add your Loom/Drive link here
+## User Roles
 
-🌍 Live App
+| Role | Capabilities |
+|------|--------------|
+| **Student** | View approved PDFs, take quizzes, view progress |
+| **Teacher** | Upload PDFs, create quizzes, manage content |
+| **Admin** | Approve/reject content, manage platform |
 
-Frontend:
+## API Endpoints
 
-https://eskuul.vercel.app
+- **Auth:** `POST /api/auth/register`, `POST /api/auth/login`
+- **PDFs:** `POST /api/pdfs/upload`, `GET /api/pdfs/approved`
+- **Quizzes:** `POST /api/quizzes/create`, `GET /api/quizzes/approved`
 
+## Troubleshooting
 
-Backend API:
-
-https://eskuul.onrender.com
-
-📁 GitHub Repo
-https://github.com/<your-username>/<your-repo>
-
-📄 SRS Document
-
-Paste link here.
-
-If you want, I can also create:
-✅ Your Google Doc
-✅ A script for the 5–10 min video presentation
-✅ A clean architecture diagram
+| Issue | Solution |
+|-------|----------|
+| CORS error | Check `CLIENT_URL` matches frontend port |
+| Database connection failed | Verify `DATABASE_URL` in `.env` |
+| Port in use | Change `PORT` in `.env` or kill existing process |
